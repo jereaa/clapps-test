@@ -1,0 +1,32 @@
+<div class="login-container">
+  <mat-card class="login-card mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      
+      <!-- <form> -->
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput [formControl]="usernameFormControl">
+
+          <mat-error *ngIf="usernameFormControl.hasError('required')">
+            Username is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="usernameFormControl.hasError('invalid') && !usernameFormControl.hasError('required')">
+            Wrong username
+          </mat-error>
+        </mat-form-field>
+      <!-- </form> -->
+
+      <div class="login-button-bar">
+        <mat-spinner color="primary" diameter="25" *ngIf="submitting"></mat-spinner>
+        <button mat-raised-button
+          color="primary"
+          (click)="login()"
+          [disabled]="submitting||usernameFormControl.invalid">Login</button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

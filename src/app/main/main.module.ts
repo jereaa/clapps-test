@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
 import { MainMaterialModule } from './main-material.module';
+import { DashboardFormComponent } from './pages/dashboard/dashboard-form/dashboard-form.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { MainMaterialModule } from './main-material.module';
   declarations: [
     MainComponent,
     HeaderComponent,
-    DashboardComponent
+    DashboardComponent,
+    DashboardFormComponent
   ]
 })
 export class MainModule { }

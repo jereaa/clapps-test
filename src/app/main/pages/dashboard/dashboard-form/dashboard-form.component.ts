@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { TaskListModel } from 'src/app/core/models/task-list.model';
+import { ApiService } from 'src/app/core/api.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard-form',
@@ -28,11 +30,15 @@ export class DashboardFormComponent implements OnInit {
 
   // Form min/max characters
   titleMin = 4;
-  titleMax = 30;
+  titleMax = 20;
   descMin = 10;
   descMax = 140;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private apiService: ApiService,
+  ) { }
 
   ngOnInit() {
     this.submitBtnText = this.isEdit ? 'Update list' : 'Create list';
@@ -90,6 +96,22 @@ export class DashboardFormComponent implements OnInit {
     if (!this.taskListForm) {
       return;
     }
+  }
+
+  get f() {
+    return this.taskListForm.controls;
+  }
+
+  onSubmit(): void {
+    this.submitting = true;
+
+    this.taskList.title = this.taskListForm.controls.title.value;
+    this.taskList.description = this .taskListForm.controls.description.value;
+    this.taskList.users = this.isEdit ? this.taskList.users : [this.auth.username];
+    this.taskList.tasks = this.isEdit ? this.taskList.tasks : null;
+    this.taskList._id = this.isEdit ? this.taskList._id : null;
+
+    console.log('Submitting: ', JSON.stringify(this.taskList));
   }
 
 }

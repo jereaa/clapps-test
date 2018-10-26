@@ -1,2 +1,8 @@
 <app-dashboard-form></app-dashboard-form>
-<p>This is the dashboard list</p>
+
+<div class="spinner-container" *ngIf="loading">
+    <mat-spinner color="primary" diameter="50"></mat-spinner>
+</div>
+<div class="task-lists-container" *ngIf="!loading">
+    <app-task-list-item *ngFor="let list of taskLists" [taskList]="list"></app-task-list-item>
+</div>

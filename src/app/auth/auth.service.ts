@@ -27,9 +27,23 @@ export class AuthError implements Error {
 })
 export class AuthService {
   isLoggedIn = false;
-  loggedUser: string;
+  private loggedUser: UserModel;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const currentUserInfo = localStorage.getItem('currentUser');
+    if (currentUserInfo) {
+      this.loggedUser = JSON.parse(currentUserInfo);
+    }
+    this.isLoggedIn = !!currentUserInfo;
+  }
+
+  get username(): string {
+    return this.loggedUser.username;
+  }
+
+  get userId(): string {
+    return this.loggedUser._id;
+  }
 
   login(username: string): Observable<UserModel> {
     return this.http.post<UserModel>(`${ENV.BASE_API}login`, { username: username })
@@ -39,7 +53,7 @@ export class AuthService {
         map(user => {
           if (user) {
             this.isLoggedIn = true;
-            this.loggedUser = user.username;
+            this.loggedUser = user;
             localStorage.setItem('currentUser', JSON.stringify(user));
           }
           return user;

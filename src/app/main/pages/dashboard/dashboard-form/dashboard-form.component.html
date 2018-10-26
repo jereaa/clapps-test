@@ -1,3 +1,44 @@
-<div class="dashboard-form-container">
-  <h1>New list</h1>
-</div>
+<h1>New list</h1>
+
+<form [formGroup]="taskListForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" #title maxlength="20">
+        <mat-hint align="end">{{title.value.length}} / {{titleMax}}</mat-hint>
+
+        <mat-error *ngIf="f.title.hasError('required')">
+            Title is <strong>required</strong>.
+        </mat-error>
+        <mat-error *ngIf="f.title.hasError('minlength')">
+            Title needs at least {{titleMin}} characters.
+        </mat-error>
+        <mat-error *ngIf="f.title.hasError('maxlength')">
+            Title can have upto {{titleMax}} characters.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" #desc maxlength="140"
+                cdkTextareaAutosize="true"
+                cdkAutosizeMinRows="2"></textarea>
+            <mat-hint align="end">{{desc.value.length}} / {{descMax}}</mat-hint>
+    
+            <mat-error *ngIf="f.description.hasError('required')">
+                Description is <strong>required</strong>.
+            </mat-error>
+            <mat-error *ngIf="f.description.hasError('minlength')">
+                Description needs at least {{descMin}} characters.
+            </mat-error>
+            <mat-error *ngIf="f.description.hasError('maxlength')">
+                Description can have upto {{descMax}} characters.
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button
+            type="submit"
+            color="primary"
+            [disabled]="submitting||taskListForm.invalid">
+            {{submitBtnText}}
+        </button>
+</form>

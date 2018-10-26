@@ -8,7 +8,12 @@ import {
     MatCheckboxModule,
     MatDialogModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
 } from '@angular/material';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
     imports: [
@@ -20,6 +25,12 @@ import {
         MatCheckboxModule,
         MatDialogModule,
         MatButtonModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        TextFieldModule,
     ],
     exports: [
         MatToolbarModule,
@@ -30,6 +41,11 @@ import {
         MatCheckboxModule,
         MatDialogModule,
         MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        TextFieldModule,
     ]
 })
 export class MainMaterialModule {}

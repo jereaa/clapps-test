@@ -37,4 +37,13 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  onSubmittedList(e): void {
+    if (!e.isEdit) {
+      this.taskLists.push(e.list);
+    } else {
+      const index = this.taskLists.findIndex(elem => elem._id === e.list._id);
+      this.taskLists.splice(index, 1);
+    }
+  }
+
 }

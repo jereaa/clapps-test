@@ -1,44 +1,53 @@
 <h1>New list</h1>
 
-<form [formGroup]="taskListForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="taskListForm" #formDirective="ngForm" (ngSubmit)="submitForm(formDirective)">
     <mat-form-field>
         <mat-label>Title</mat-label>
         <input matInput formControlName="title" #title maxlength="20">
         <mat-hint align="end">{{title.value.length}} / {{titleMax}}</mat-hint>
 
-        <mat-error *ngIf="f.title.hasError('required')">
+        <mat-error *ngIf="taskListForm.get('title').hasError('required')">
             Title is <strong>required</strong>.
         </mat-error>
-        <mat-error *ngIf="f.title.hasError('minlength')">
+        <mat-error *ngIf="taskListForm.get('title').hasError('minlength')">
             Title needs at least {{titleMin}} characters.
         </mat-error>
-        <mat-error *ngIf="f.title.hasError('maxlength')">
+        <mat-error *ngIf="taskListForm.get('title').hasError('maxlength')">
             Title can have upto {{titleMax}} characters.
         </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description" #desc maxlength="140"
-                cdkTextareaAutosize="true"
-                cdkAutosizeMinRows="2"></textarea>
-            <mat-hint align="end">{{desc.value.length}} / {{descMax}}</mat-hint>
-    
-            <mat-error *ngIf="f.description.hasError('required')">
-                Description is <strong>required</strong>.
-            </mat-error>
-            <mat-error *ngIf="f.description.hasError('minlength')">
-                Description needs at least {{descMin}} characters.
-            </mat-error>
-            <mat-error *ngIf="f.description.hasError('maxlength')">
-                Description can have upto {{descMax}} characters.
-            </mat-error>
-        </mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" #desc maxlength="140"
+            cdkTextareaAutosize="true"
+            cdkAutosizeMinRows="2"></textarea>
+        <mat-hint align="end">{{desc.value.length}} / {{descMax}}</mat-hint>
 
+        <mat-error *ngIf="taskListForm.get('description').hasError('required')">
+            Description is <strong>required</strong>.
+        </mat-error>
+        <mat-error *ngIf="taskListForm.get('description').hasError('minlength')">
+            Description needs at least {{descMin}} characters.
+        </mat-error>
+        <mat-error *ngIf="taskListForm.get('description').hasError('maxlength')">
+            Description can have upto {{descMax}} characters.
+        </mat-error>
+    </mat-form-field>
+
+    <div class="form-buttons">
+        <button mat-raised-button
+            color="warn"
+            [disabled]="submitting"
+            type="reset"
+            (click)="resetForm()">
+            Cancel
+        </button>
         <button mat-raised-button
             type="submit"
             color="primary"
             [disabled]="submitting||taskListForm.invalid">
             {{submitBtnText}}
         </button>
+    </div>
 </form>

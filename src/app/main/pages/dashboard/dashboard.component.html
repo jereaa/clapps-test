@@ -1,4 +1,4 @@
-<app-dashboard-form></app-dashboard-form>
+<app-dashboard-form (submittedList)="onSubmittedList($event)"></app-dashboard-form>
 
 <div class="spinner-container" *ngIf="loading">
     <mat-spinner color="primary" diameter="50"></mat-spinner>

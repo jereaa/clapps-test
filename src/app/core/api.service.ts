@@ -17,8 +17,34 @@ export class ApiService {
     private auth: AuthService
   ) { }
 
+  // TODO: Remove all delay calls.
+
   getLists(): Observable<TaskListModel[]> {
     return this.http.get<TaskListModel[]>(`${ENV.BASE_API}lists/${this.auth.userId}`)
+      .pipe(
+        delay(2000),
+        catchError(this._errorHandler)
+      );
+  }
+
+  createList(taskList: TaskListModel): Observable<TaskListModel> {
+    return this.http.post<TaskListModel>(`${ENV.BASE_API}lists/${this.auth.userId}`, taskList)
+      .pipe(
+        delay(2000),
+        catchError(this._errorHandler)
+      );
+  }
+
+  editList(id: string, taskList: TaskListModel): Observable<TaskListModel> {
+    return this.http.put<TaskListModel>(`${ENV.BASE_API}lists/${this.auth.userId}/${id}`, taskList)
+      .pipe(
+        delay(2000),
+        catchError(this._errorHandler)
+      );
+  }
+
+  deleteList(id: string): Observable<any> {
+    return this.http.delete(`${ENV.BASE_API}lists/${this.auth.userId}/${id}`)
       .pipe(
         delay(2000),
         catchError(this._errorHandler)

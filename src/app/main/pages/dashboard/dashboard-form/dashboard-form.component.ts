@@ -19,10 +19,6 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
   taskListForm: FormGroup;
   taskList: TaskListModel;
 
-  // Form validation and errors
-  // formErrors: any;
-  formChangeSub: Subscription;
-
   // Form submission
   submitTaskListSub: Subscription;
   error: boolean;
@@ -42,9 +38,7 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.submitBtnText = this.isEdit ? 'Update list' : 'Create list';
-    this.isEdit = !!this.taskList;
-    this.taskList = this._setFormData();
+    this._setFormData();
     this._buildForm();
   }
 
@@ -52,17 +46,22 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
     this.submitTaskListSub.unsubscribe();
   }
 
-  private _setFormData(): TaskListModel {
+  private _setFormData(isEdit = false): void {
+    this.isEdit = isEdit;
+    this.submitBtnText = this.isEdit ? 'Update list' : 'Create list';
     if (!this.isEdit) {
-      return new TaskListModel(null, null, null);
+      this.taskList = new TaskListModel(null, null, null);
     } else {
-      return new TaskListModel(
-        this.taskList.title,
-        this.taskList.description,
-        this.taskList.userIds,
-        this.taskList.tasks,
-        this.taskList ? this.taskList._id : null
-      );
+      this.taskListForm.controls.title.setValue(this.taskList.title);
+      this.taskListForm.controls.description.setValue(this.taskList.description);
+      // In case we are editing a list,
+      // trigger immediate validation by marking
+      // fields as dirty in case field is no longer valid
+      for (const key in this.taskListForm.controls) {
+        if (this.taskListForm.controls.hasOwnProperty(key)) {
+          this.taskListForm.controls[key].markAsDirty();
+        }
+      }
     }
   }
 
@@ -79,38 +78,16 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(this.descMax)
       ]]
     });
+  }
 
-    // Subscribe to form value changes
-    this.formChangeSub = this.taskListForm.valueChanges.subscribe((data) => this._onValueChanged(data));
-
-    // In case we are editing a list,
-    // trigger immediate validation by marking
-    // fields as dirty in case field is no longer valid
-    if (this.isEdit) {
-      for (const key in this.taskListForm.controls) {
-        if (this.taskListForm.controls.hasOwnProperty(key)) {
-          this.taskListForm.controls[key].markAsDirty();
-        }
-      }
-    }
-
-    this._onValueChanged();
+  editList(editTaskList: TaskListModel): void {
+    this.taskList = editTaskList;
+    this._setFormData(true);
   }
 
   resetForm(): void {
     this.taskListForm.reset();
-    this.isEdit = false;
-    this.taskList = new TaskListModel(null, null, null);
-  }
-
-  private _onValueChanged(data?: any): void {
-    if (!this.taskListForm) {
-      return;
-    }
-  }
-
-  get f() {
-    return this.taskListForm.controls;
+    this._setFormData();
   }
 
   submitForm(formDirective: FormGroupDirective): void {

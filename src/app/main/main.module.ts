@@ -8,7 +8,6 @@ import { HeaderComponent } from './header/header.component';
 import { MainMaterialModule } from './main-material.module';
 import { DashboardFormComponent } from './pages/dashboard/dashboard-form/dashboard-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TaskListItemComponent } from './pages/dashboard/task-list-item/task-list-item.component';
 
 @NgModule({
   imports: [
@@ -22,7 +21,6 @@ import { TaskListItemComponent } from './pages/dashboard/task-list-item/task-lis
     HeaderComponent,
     DashboardComponent,
     DashboardFormComponent,
-    TaskListItemComponent
   ]
 })
 export class MainModule { }

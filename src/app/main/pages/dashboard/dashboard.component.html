@@ -4,5 +4,18 @@
     <mat-spinner color="primary" diameter="50"></mat-spinner>
 </div>
 <div class="task-lists-container" *ngIf="!loading">
-    <app-task-list-item *ngFor="let list of taskLists" [taskList]="list"></app-task-list-item>
+    <div class="task-list" *ngFor="let list of taskLists">
+        <div class="text-container">
+            <h4>{{list.title}}</h4>
+            <p>{{list.description}}</p>
+        </div>
+        <div class="actions-container">
+            <button class="action-button edit" (click)="editList(list)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="action-button delete" (click)="deleteList(list)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
 </div>

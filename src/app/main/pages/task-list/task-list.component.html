@@ -9,22 +9,31 @@
     class="mat-elevation-z8">
   </app-task-list-form>
   
-  <div class="tasks-container">
-    <mat-card *ngFor="let task of taskList.tasks">
+  <div class="no-tasks-container" *ngIf="!taskList.tasks || taskList.tasks.length === 0">
+    <h2>There are no tasks yet. Add your first one!</h2>
+  </div>
+
+  <div class="tasks-container" *ngIf="taskList.tasks&&taskList.tasks.length > 0">
+    <mat-card *ngFor="let task of taskList.tasks"
+      [class.task-completed]="task.status === 2"
+      [class.task-started]="task.status === 1">
       <mat-card-header>
         <mat-card-title>{{task.title}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="content-text" [innerHTML]="formatText(task.description)"></div>
-        <div class="actions-container">
-            <button class="action-button edit" (click)="editTask(task)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="action-button delete"
-              (click)="deleteTask(task)"
-              [disabled]="deletingId&&deletingId===task._id">
-              <mat-icon>delete</mat-icon>
-            </button>
+        <div class="task-footer">
+          <div class="status">
+            {{statusStrings[task.status]}}
+          </div>
+          <button class="action-button edit" (click)="editTask(task)">
+              <mat-icon>edit</mat-icon>
+          </button>
+          <button class="action-button delete"
+            (click)="deleteTask(task)"
+            [disabled]="deletingId&&deletingId===task._id">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </mat-card-content>
     </mat-card>

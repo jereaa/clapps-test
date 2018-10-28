@@ -52,6 +52,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  tasksNum(list: TaskListModel): number {
+    return list.tasks ? list.tasks.length : 0;
+  }
+
   onSubmittedList(e): void {
     if (!e.isEdit) {
       this.taskLists.push(e.list);

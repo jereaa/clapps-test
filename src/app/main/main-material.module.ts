@@ -8,6 +8,7 @@ import {
     MatCardModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatDividerModule,
 } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 
@@ -23,6 +24,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
         MatCardModule,
         MatProgressSpinnerModule,
         TextFieldModule,
+        MatDividerModule,
     ],
     exports: [
         MatToolbarModule,
@@ -34,6 +36,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
         MatCardModule,
         MatProgressSpinnerModule,
         TextFieldModule,
+        MatDividerModule,
     ]
 })
 export class MainMaterialModule {}

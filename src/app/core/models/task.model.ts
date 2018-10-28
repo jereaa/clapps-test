@@ -1,10 +1,15 @@
 export enum TaskStatus {
-    PENDING,
+    PENDING = 0,
     STARTED,
     COMPLETED
 }
 
 export interface ITaskStatusStrings { [id: number]: string; }
+export const TASK_STATUS_STRINGS: ITaskStatusStrings = {
+    0: 'Pending',
+    1: 'Started',
+    2: 'Completed'
+};
 
 export class TaskModel {
     constructor(
@@ -15,3 +20,4 @@ export class TaskModel {
         public _id?: string
     ) {}
 }
+

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { TaskListFormComponent } from './task-list-form/task-list-form.component';
 import { ApiService } from 'src/app/core/api.service';
 import { TaskListModel } from 'src/app/core/models/task-list.model';
-import { TaskModel } from 'src/app/core/models/task.model';
+import { TaskModel, ITaskStatusStrings, TASK_STATUS_STRINGS } from 'src/app/core/models/task.model';
 
 @Component({
   selector: 'app-task-list',
@@ -27,6 +27,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   deletingId: string;
   deleteSub: Subscription;
+
+  statusStrings: ITaskStatusStrings = TASK_STATUS_STRINGS;
 
   constructor(
     private title: Title,
@@ -53,6 +55,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   onSubmittedTask(e): void {
     if (!e.isEdit) {
+      if (!this.taskList.tasks) {
+        this.taskList.tasks = [];
+      }
       this.taskList.tasks.push(e.task);
     } else {
       const index = this.taskList.tasks.findIndex(elem => elem._id === e.task._id);

@@ -1,23 +1,41 @@
 <app-dashboard-form (submittedList)="onSubmittedList($event)" class="mat-elevation-z8"></app-dashboard-form>
 
+<!-- Loading spinner -->
 <div class="spinner-container" *ngIf="loading">
     <mat-spinner color="primary" diameter="50"></mat-spinner>
 </div>
-<div class="task-lists-container" *ngIf="!loading">
-    <div class="task-list" *ngFor="let list of taskLists">
-        <div class="text-container" [routerLink]="['/app/lists/' + list._id]">
-            <h4>{{list.title}}</h4>
-            <p>{{list.description}}</p>
-        </div>
-        <div class="actions-container">
-            <button class="action-button edit" (click)="editList(list)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="action-button delete"
-                (click)="deleteList(list)"
-                [disabled]="deletingId&&deletingId===list._id">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
+
+<!-- Once lists were loaded -->
+<ng-template [ngIf]="!loading">
+
+    <!-- User has no lists yet -->
+    <div class="no-lists-container" *ngIf="!taskLists || taskLists.length === 0">
+        <h2>There are no lists yet. Start by adding your first one!</h2>
     </div>
-</div>
+
+    <!-- Lists container -->
+    <div class="task-lists-container" *ngIf="taskLists && taskLists.length > 0">
+        <ng-template ngFor let-list [ngForOf]="taskLists" let-last="last">
+            <div class="task-list">
+                <div class="text-container" [routerLink]="['/app/lists/' + list._id]">
+                    <h4>{{list.title}}</h4>
+                    <p>{{list.description}}</p>
+                </div>
+                <div class="tasks-num-container">
+                    Tasks<br>{{tasksNum(list)}}
+                </div>
+                <div class="actions-container">
+                    <button class="action-button edit" (click)="editList(list)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="action-button delete"
+                        (click)="deleteList(list)"
+                        [disabled]="deletingId&&deletingId===list._id">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <mat-divider *ngIf="!last"></mat-divider>
+        </ng-template>
+    </div>
+</ng-template>

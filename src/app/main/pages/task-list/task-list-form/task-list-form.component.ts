@@ -2,7 +2,7 @@ import { Component, OnInit, Output, OnDestroy, EventEmitter, Input } from '@angu
 import { FormGroup, FormBuilder, Validators, FormGroupDirective } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { TaskModel, TaskStatus, ITaskStatusStrings } from 'src/app/core/models/task.model';
+import { TaskModel, TaskStatus, ITaskStatusStrings, TASK_STATUS_STRINGS } from 'src/app/core/models/task.model';
 import { ApiService } from 'src/app/core/api.service';
 
 const keys = Object.keys(TaskStatus).filter(k => typeof TaskStatus[k as any] === 'number');
@@ -37,7 +37,7 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
 
   taskStatusKeys = keys;
   taskStatusValues = values;
-  taskStatusStrings: ITaskStatusStrings = {};
+  taskStatusStrings: ITaskStatusStrings = TASK_STATUS_STRINGS;
 
   constructor(
     private fb: FormBuilder,
@@ -45,9 +45,6 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.taskStatusStrings[TaskStatus.PENDING] = 'Pending';
-    this.taskStatusStrings[TaskStatus.STARTED] = 'Started';
-    this.taskStatusStrings[TaskStatus.COMPLETED] = 'Completed';
     this._setFormData();
     this._buildForm();
   }

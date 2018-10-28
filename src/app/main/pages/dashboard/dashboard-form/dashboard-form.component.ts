@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class DashboardFormComponent implements OnInit, OnDestroy {
   @Output() submittedList = new EventEmitter();
   isEdit: boolean;
+  formTitle: string;
 
   // Form and model
   taskListForm: FormGroup;
@@ -52,8 +53,10 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
     this.isEdit = isEdit;
     this.submitBtnText = this.isEdit ? 'Update list' : 'Create list';
     if (!this.isEdit) {
+      this.formTitle = 'New list';
       this.taskList = new TaskListModel(null, null, null);
     } else {
+      this.formTitle = 'Edit list';
       this.taskListForm.controls.title.setValue(this.taskList.title);
       this.taskListForm.controls.description.setValue(this.taskList.description);
       // In case we are editing a list,

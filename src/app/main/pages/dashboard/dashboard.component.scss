@@ -10,13 +10,24 @@
     justify-content: center;
 }
 
+.no-lists-container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: rgba(0, 0, 0, .5)
+}
+
 .task-lists-container {
     display: flex;
     flex-direction: column;
     flex: 1;
+    padding: 0.5em;
 
     .task-list {
-        padding: 0.7em;
+        padding: 1em;
         display: flex;
         justify-content: center;
         
@@ -25,15 +36,27 @@
             flex-direction: column;
             flex: 1;
             cursor: pointer;
+            padding-right: 0.5em;
         
             h4 {
-                margin: 0;
+                margin: 0 0 0.2em 0;
             }
         
             p {
                 margin: 0;
                 font-size: 0.8em;
+                color: rgba(0, 0, 0, .85);
             }
+        }
+
+        .tasks-num-container {
+            display: flex;
+            align-items: center;
+            margin: 0 1.5em;
+            
+            text-align: center;
+            font-weight: 500;
+            color: rgba(0, 0, 0, .65);
         }
     
         .actions-container {

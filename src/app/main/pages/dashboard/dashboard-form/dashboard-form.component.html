@@ -1,4 +1,4 @@
-<h1>New list</h1>
+<h1>{{formTitle}}</h1>
 
 <form [formGroup]="taskListForm" #formDirective="ngForm" (ngSubmit)="submitForm(formDirective)">
     <mat-form-field>
@@ -37,17 +37,17 @@
 
     <div class="form-buttons">
         <button mat-raised-button
+            type="submit"
+            color="primary"
+            [disabled]="submitting||taskListForm.invalid">
+            {{submitBtnText}}
+        </button>
+        <button mat-raised-button
             color="warn"
             [disabled]="submitting"
             type="reset"
             (click)="resetForm()">
             Cancel
-        </button>
-        <button mat-raised-button
-            type="submit"
-            color="primary"
-            [disabled]="submitting||taskListForm.invalid">
-            {{submitBtnText}}
         </button>
     </div>
 </form>

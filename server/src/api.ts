@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import { UserSchema, IUserModel } from './models/user';
-import { TaskListSchema, ITaskListModel, taskListSchema } from './models/taskList';
+import { TaskListSchema, ITaskListModel } from './models/taskList';
 
 const router = express.Router();
 

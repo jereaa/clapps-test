@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"tsc -w -p ./server/\" \"nodemon ./server/dist/server.js\" \"ng serve -o\"",
+    "tsc": "tsc",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -28,6 +29,7 @@
     "express": "^4.16.4",
     "hammerjs": "^2.0.8",
     "mongoose": "^5.3.7",
+    "path": "^0.12.7",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },
@@ -36,6 +38,7 @@
     "@angular/cli": "^7.0.3",
     "@angular/compiler-cli": "~7.0.1",
     "@angular/language-service": "~7.0.1",
+    "@types/cors": "^2.8.4",
     "@types/express": "^4.16.0",
     "@types/jasmine": "~2.8.9",
     "@types/jasminewd2": "~2.0.5",

@@ -15,7 +15,17 @@
         <mat-card-title>{{task.title}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        {{task.description}}
+        <div class="content-text" [innerHTML]="formatText(task.description)"></div>
+        <div class="actions-container">
+            <button class="action-button edit" (click)="editTask(task)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="action-button delete"
+              (click)="deleteTask(task)"
+              [disabled]="deletingId&&deletingId===task._id">
+              <mat-icon>delete</mat-icon>
+            </button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

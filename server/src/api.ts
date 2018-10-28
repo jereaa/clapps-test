@@ -188,7 +188,7 @@ router.put('/lists/:userId/:listId/:taskId', (req: express.Request, res: express
             return res.status(403).send({ message: 'You don\'t have permissions to edit this task.'});
         }
 
-        const index = taskList.tasks.findIndex(elem => elem._id === req.params.taskId);
+        const index = taskList.tasks.findIndex(elem => elem._id.equals(req.params.taskId));
         if (index === -1) {
             return res.status(400).send({ message: 'Task not found.' });
         }
@@ -218,7 +218,7 @@ router.delete('/lists/:userId/:listId/:taskId', (req: express.Request, res: expr
             return res.status(403).send({ message: 'You don\'t have permissions to edit this task.'});
         }
 
-        const index = taskList.tasks.findIndex(elem => elem._id === req.params.taskId);
+        const index = taskList.tasks.findIndex(elem => elem._id.equals(req.params.taskId));
         if (index === -1) {
             return res.status(400).send({ message: 'Task not found.' });
         }

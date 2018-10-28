@@ -39,32 +39,6 @@
         .actions-container {
             display: flex;
             align-items: center;
-        
-            button.action-button {
-                border: none;
-                color: white;
-                padding: 0.6em;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                margin: 0 0.2em;
-                border-radius: 50%;
-                cursor: pointer;
-        
-                &.delete {
-                    background-color: #d50000;
-                }
-        
-                &.edit {
-                    background-color: #673ab7;
-                }
-            }
-
-            button.action-button[disabled] {
-                background-color: rgba(0,0,0,.12);
-                color: rgba(0,0,0,.26);
-                cursor: default;
-            }
         }
     }
 }

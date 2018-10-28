@@ -17,6 +17,7 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
   @Input() listId: string;
   @Output() submittedTask = new EventEmitter();
   isEdit: boolean;
+  formTitle: string;
 
   // Form and model
   task: TaskModel;
@@ -60,6 +61,7 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
   private _setFormData(isEdit = false): void {
     this.isEdit = isEdit;
     this.submitBtnText = this.isEdit ? 'Update task' : 'Create task';
+    this.formTitle = this.isEdit ? 'Edit task' : 'New task';
     if (!this.isEdit) {
       this.task = new TaskModel(null, null);
     } else {
@@ -90,7 +92,7 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
         Validators.minLength(this.descMin),
         Validators.maxLength(this.descMax)
       ]],
-      status: [this.task.status]
+      status: []
     });
   }
 
@@ -132,7 +134,6 @@ export class TaskListFormComponent implements OnInit, OnDestroy {
           () => this.submitting = false
         );
     }
-    console.log('Submitting: ', JSON.stringify(this.task));
   }
 
   private _handleSuccess(submittedTask: TaskModel, formDirective: FormGroupDirective): void {

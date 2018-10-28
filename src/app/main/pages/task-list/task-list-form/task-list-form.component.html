@@ -1,4 +1,4 @@
-<h1>New task</h1>
+<h1>{{formTitle}}</h1>
 
 <form [formGroup]="taskForm" #formDirective="ngForm" (ngSubmit)="submitForm(formDirective)">
     <mat-form-field>
@@ -21,7 +21,7 @@
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description" #desc maxlength="140"
             cdkTextareaAutosize="true"
-            cdkAutosizeMinRows="2"></textarea>
+            cdkAutosizeMinRows="3"></textarea>
         <mat-hint align="end">{{desc.value.length}} / {{descMax}}</mat-hint>
 
         <mat-error *ngIf="taskForm.get('description').hasError('required')">

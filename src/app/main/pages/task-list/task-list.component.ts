@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+import { TaskListFormComponent } from './task-list-form/task-list-form.component';
 import { ApiService } from 'src/app/core/api.service';
 import { TaskListModel } from 'src/app/core/models/task-list.model';
+import { TaskModel } from 'src/app/core/models/task.model';
 
 @Component({
   selector: 'app-task-list',
@@ -12,12 +14,19 @@ import { TaskListModel } from 'src/app/core/models/task-list.model';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit, OnDestroy {
+
+  @ViewChild(TaskListFormComponent)
+  private taskForm: TaskListFormComponent;
+
   loading: boolean;
   error: boolean;
 
   routeSub: Subscription;
   id: string;
   taskList: TaskListModel;
+
+  deletingId: string;
+  deleteSub: Subscription;
 
   constructor(
     private title: Title,
@@ -37,6 +46,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
     if (this.routeSub) {
       this.routeSub.unsubscribe();
     }
+    if (this.deleteSub) {
+      this.deleteSub.unsubscribe();
+    }
   }
 
   onSubmittedTask(e): void {
@@ -46,6 +58,39 @@ export class TaskListComponent implements OnInit, OnDestroy {
       const index = this.taskList.tasks.findIndex(elem => elem._id === e.task._id);
       this.taskList.tasks.splice(index, 1, e.task);
     }
+  }
+
+  formatText(unformatted: string): string {
+    return unformatted.replace(/\n/g, '<br>');
+  }
+
+  editTask(task: TaskModel): void {
+    this.taskForm.editTask(new TaskModel(
+      task.title,
+      task.description,
+      task.status,
+      task.order,
+      task._id
+    ));
+  }
+
+  deleteTask(task: TaskModel): void {
+    const index = this.taskList.tasks.indexOf(task);
+
+    this.deletingId = task._id;
+    this.deleteSub = this.api
+      .deleteTask(this.taskList._id, task._id)
+      .subscribe(
+        () => {
+          this.taskList.tasks.splice(index, 1);
+        },
+        (error: Error) => {
+          console.error('Error deleting list: ', error.message);
+        },
+        () => {
+          this.deletingId = null;
+        }
+      );
   }
 
   private _getTaskList(): void {

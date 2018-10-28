@@ -1,0 +1,22 @@
+<div class="spinner-container" *ngIf="loading">
+  <mat-spinner color="primary" diameter="50"></mat-spinner>
+</div>
+
+<ng-template [ngIf]="!loading">
+  <app-task-list-form
+    [listId]="id"
+    (submittedTask)="onSubmittedTask($event)"
+    class="mat-elevation-z8">
+  </app-task-list-form>
+  
+  <div class="tasks-container">
+    <mat-card *ngFor="let task of taskList.tasks">
+      <mat-card-header>
+        <mat-card-title>{{task.title}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{task.description}}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-template>

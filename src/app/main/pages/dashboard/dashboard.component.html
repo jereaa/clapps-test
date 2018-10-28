@@ -1,11 +1,11 @@
-<app-dashboard-form (submittedList)="onSubmittedList($event)"></app-dashboard-form>
+<app-dashboard-form (submittedList)="onSubmittedList($event)" class="mat-elevation-z8"></app-dashboard-form>
 
 <div class="spinner-container" *ngIf="loading">
     <mat-spinner color="primary" diameter="50"></mat-spinner>
 </div>
 <div class="task-lists-container" *ngIf="!loading">
     <div class="task-list" *ngFor="let list of taskLists">
-        <div class="text-container">
+        <div class="text-container" [routerLink]="['/app/lists/' + list._id]">
             <h4>{{list.title}}</h4>
             <p>{{list.description}}</p>
         </div>
@@ -13,7 +13,9 @@
             <button class="action-button edit" (click)="editList(list)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button class="action-button delete" (click)="deleteList(list)">
+            <button class="action-button delete"
+                (click)="deleteList(list)"
+                [disabled]="deletingId&&deletingId===list._id">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

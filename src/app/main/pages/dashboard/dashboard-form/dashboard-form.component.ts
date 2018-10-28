@@ -43,7 +43,9 @@ export class DashboardFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.submitTaskListSub.unsubscribe();
+    if (this.submitTaskListSub) {
+      this.submitTaskListSub.unsubscribe();
+    }
   }
 
   private _setFormData(isEdit = false): void {

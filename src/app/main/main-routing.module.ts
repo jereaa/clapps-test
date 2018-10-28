@@ -5,6 +5,7 @@ import { AuthGuard } from '../auth/auth.guard';
 
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TaskListComponent } from './pages/task-list/task-list.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,9 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     children: [
-      { path: '', component: DashboardComponent }
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'lists/:id', component: TaskListComponent},
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
     ]
   }
 ];

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { DashboardFormComponent } from './dashboard-form/dashboard-form.componen
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   @ViewChild(DashboardFormComponent)
   private formComponent: DashboardFormComponent;
@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   pageTitle = 'Dashboard';
   loading: boolean;
   error: boolean;
+  deletingId: string;
   taskLists: TaskListModel[];
 
   deleteSub: Subscription;
@@ -45,6 +46,12 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+    if (this.deleteSub) {
+      this.deleteSub.unsubscribe();
+    }
+  }
+
   onSubmittedList(e): void {
     if (!e.isEdit) {
       this.taskLists.push(e.list);
@@ -67,6 +74,7 @@ export class DashboardComponent implements OnInit {
   deleteList(taskList: TaskListModel): void {
     const index = this.taskLists.indexOf(taskList);
 
+    this.deletingId = taskList._id;
     this.deleteSub = this.api
       .deleteList(taskList._id)
       .subscribe(
@@ -75,6 +83,9 @@ export class DashboardComponent implements OnInit {
         },
         (error: Error) => {
           console.error('Error deleting list: ', error.message);
+        },
+        () => {
+          this.deletingId = null;
         }
       );
   }

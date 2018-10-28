@@ -1,0 +1,19 @@
+:host {
+    flex: 1;
+    display: flex;
+}
+
+.spinner-container {
+    flex: 1;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+
+.tasks-container {
+    display: flex;
+    flex: 1;
+    padding: 1.3em;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}

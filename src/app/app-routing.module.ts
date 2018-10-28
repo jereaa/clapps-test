@@ -11,9 +11,14 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: '**',
+    path: 'app',
     loadChildren: './main/main.module#MainModule',
     canLoad: [AuthGuard]
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'app'
   }
 ];
 

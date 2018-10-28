@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import { UserSchema, IUserModel } from './models/user';
-import { TaskListSchema, ITaskListModel } from './models/taskList';
+import { TaskListSchema, ITaskListModel, taskListSchema } from './models/taskList';
 
 const router = express.Router();
 
@@ -9,6 +9,10 @@ router.get('/', (req: express.Request, res: express.Response) => {
     res.send('API is up!');
 });
 
+
+/**
+ * TEST ROUTES!!!
+ */
 /* router.get('/test/addUsers', (req, res) => {
     UserSchema.insertMany([
         { username: 'jereaa' },
@@ -20,7 +24,7 @@ router.get('/', (req: express.Request, res: express.Response) => {
         }
         res.send(docs);
     });
-}); */
+});
 
 router.get('/test/addTasks', (req, res) => {
     TaskListSchema.insertMany([
@@ -54,6 +58,7 @@ router.get('/test/addTasks', (req, res) => {
         return res.send(docs);
     });
 });
+ */
 
 // Get all lists from certain user
 router.get('/lists/:userId', (req: express.Request, res: express.Response) => {
@@ -81,6 +86,23 @@ router.post('/lists/:userId', (req: express.Request, res: express.Response) => {
     });
 });
 
+// Get a certain list
+router.get('/lists/:userId/:id', (req: express.Request, res: express.Response) => {
+    TaskListSchema.findById(req.params.id, (err: Error, taskList: ITaskListModel) => {
+        if (err) {
+            return res.status(500).send({ message: err.message });
+        }
+        if (!taskList) {
+            return res.status(400).send({ message: 'List not found.' });
+        }
+        if (taskList.userIds.indexOf(req.params.userId) === -1) {
+            return res.status(403).send({ message: 'You don\'t have permissions to access this list.'});
+        }
+
+        return res.send(taskList);
+    });
+});
+
 // Edit a certain list
 router.put('/lists/:userId/:id', (req: express.Request, res: express.Response) => {
     TaskListSchema.findById(req.params.id, (err: Error, taskList: ITaskListModel) => {
@@ -91,7 +113,7 @@ router.put('/lists/:userId/:id', (req: express.Request, res: express.Response) =
             return res.status(400).send({ message: 'List not found.' });
         }
         if (taskList.userIds.indexOf(req.params.userId) === -1) {
-            return res.status(403).send({ message: 'You don\'t have permissions to delete this list.'});
+            return res.status(403).send({ message: 'You don\'t have permissions to edit this list.'});
         }
 
         taskList.title = req.body.title;
@@ -124,6 +146,89 @@ router.delete('/lists/:userId/:id', (req: express.Request, res: express.Response
                 return res.status(500).send({ message: delError.message });
             }
             return res.send({ message: 'List deleted successfully. '});
+        });
+    });
+});
+
+// Add new Task to a certain TaskList
+router.post('/lists/:userId/:listId/newTask', (req: express.Request, res: express.Response) => {
+    TaskListSchema.findById(req.params.listId, (err: Error, taskList: ITaskListModel) => {
+        if (err) {
+            return res.status(500).send({ message: err.message });
+        }
+        if (!taskList) {
+            return res.status(400).send({ message: 'List not found.' });
+        }
+        if (taskList.userIds.indexOf(req.params.userId) === -1) {
+            return res.status(403).send({ message: 'You don\'t have permissions to add to this list.'});
+        }
+        if (!taskList.tasks) {
+            taskList.tasks = [];
+        }
+        taskList.tasks.push(req.body);
+        taskList.save((saveError: Error, savedTaskList) => {
+            if (saveError) {
+                return res.status(500).send({ message: saveError.message });
+            }
+            return res.send(savedTaskList.tasks[savedTaskList.tasks.length - 1]);
+        });
+    });
+});
+
+// Edit a certain Task in a certain List (these routes are getting quite messy...)
+router.put('/lists/:userId/:listId/:taskId', (req: express.Request, res: express.Response) => {
+    TaskListSchema.findById(req.params.listId, (err: Error, taskList: ITaskListModel) => {
+        if (err) {
+            return res.status(500).send({ message: err.message });
+        }
+        if (!taskList) {
+            return res.status(400).send({ message: 'List not found.' });
+        }
+        if (taskList.userIds.indexOf(req.params.userId) === -1) {
+            return res.status(403).send({ message: 'You don\'t have permissions to edit this task.'});
+        }
+
+        const index = taskList.tasks.findIndex(elem => elem._id === req.params.taskId);
+        if (index === -1) {
+            return res.status(400).send({ message: 'Task not found.' });
+        }
+
+        req.body._id = taskList.tasks[index]._id;   // Just making sure the ID doesn't change
+        taskList.tasks.splice(index, 1, req.body);
+
+        taskList.save((saveError: Error, savedTaskList) => {
+            if (saveError) {
+                return res.status(500).send({ message: saveError.message });
+            }
+            return res.send(savedTaskList.tasks[index]);
+        });
+    });
+});
+
+// Delete a certain Task in a certain List (these routes are getting quite messy...)
+router.delete('/lists/:userId/:listId/:taskId', (req: express.Request, res: express.Response) => {
+    TaskListSchema.findById(req.params.listId, (err: Error, taskList: ITaskListModel) => {
+        if (err) {
+            return res.status(500).send({ message: err.message });
+        }
+        if (!taskList) {
+            return res.status(400).send({ message: 'List not found.' });
+        }
+        if (taskList.userIds.indexOf(req.params.userId) === -1) {
+            return res.status(403).send({ message: 'You don\'t have permissions to edit this task.'});
+        }
+
+        const index = taskList.tasks.findIndex(elem => elem._id === req.params.taskId);
+        if (index === -1) {
+            return res.status(400).send({ message: 'Task not found.' });
+        }
+
+        taskList.tasks.splice(index, 1);
+        taskList.save((saveError: Error, savedTaskList) => {
+            if (saveError) {
+                return res.status(500).send({ message: saveError.message });
+            }
+            return res.send({ message: 'Task deleted successfully.' });
         });
     });
 });

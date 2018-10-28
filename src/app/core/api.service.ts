@@ -18,12 +18,9 @@ export class ApiService {
     private auth: AuthService
   ) { }
 
-  // TODO: Remove all delay calls.
-
   getLists(): Observable<TaskListModel[]> {
     return this.http.get<TaskListModel[]>(`${ENV.BASE_API}lists/${this.auth.userId}`)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -31,7 +28,6 @@ export class ApiService {
   createList(taskList: TaskListModel): Observable<TaskListModel> {
     return this.http.post<TaskListModel>(`${ENV.BASE_API}lists/${this.auth.userId}`, taskList)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -39,7 +35,6 @@ export class ApiService {
   getList(id: string): Observable<TaskListModel> {
     return this.http.get<TaskListModel>(`${ENV.BASE_API}lists/${this.auth.userId}/${id}`)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -47,7 +42,6 @@ export class ApiService {
   editList(id: string, taskList: TaskListModel): Observable<TaskListModel> {
     return this.http.put<TaskListModel>(`${ENV.BASE_API}lists/${this.auth.userId}/${id}`, taskList)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -55,7 +49,6 @@ export class ApiService {
   deleteList(id: string): Observable<any> {
     return this.http.delete(`${ENV.BASE_API}lists/${this.auth.userId}/${id}`)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -63,7 +56,6 @@ export class ApiService {
   createTask(listId: string, task: TaskModel): Observable<TaskModel> {
     return this.http.post<TaskModel>(`${ENV.BASE_API}lists/${this.auth.userId}/${listId}/newTask`, task)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -71,7 +63,6 @@ export class ApiService {
   editTask(listId: string, taskId: string, task: TaskModel): Observable<TaskModel> {
     return this.http.put<TaskModel>(`${ENV.BASE_API}lists/${this.auth.userId}/${listId}/${taskId}`, task)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }
@@ -79,7 +70,6 @@ export class ApiService {
   deleteTask(listId: string, taskId: string): Observable<any> {
     return this.http.delete(`${ENV.BASE_API}lists/${this.auth.userId}/${listId}/${taskId}`)
       .pipe(
-        delay(2000),
         catchError(this._errorHandler)
       );
   }

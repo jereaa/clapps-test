@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"tsc -w -p ./server\" \"nodemon ./dist/server/server.js\" \"ng serve -o\"",
+    "postinstall": "tsc -p ./server",
     "tsc": "tsc",
     "build": "tsc -p ./server && ng build",
     "start-prod": "node ./dist/server/server.js",

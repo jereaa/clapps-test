@@ -2,6 +2,10 @@
 
 This project is just your typical "To Do" list, built in Angular 7 for Clapps as a test.
 
+## Install
+
+First run `npm install` to install all dependencies.
+
 ## Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

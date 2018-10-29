@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"tsc -w -p ./server/\" \"nodemon ./server/dist/server.js\" \"ng serve -o\"",
+    "start": "concurrently \"tsc -w -p ./server\" \"nodemon ./dist/server/server.js\" \"ng serve -o\"",
     "tsc": "tsc",
-    "build": "ng build",
+    "build": "tsc -p ./server && ng build",
+    "start-prod": "node ./dist/server/server.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

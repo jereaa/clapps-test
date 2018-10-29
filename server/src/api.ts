@@ -235,7 +235,6 @@ router.delete('/lists/:userId/:listId/:taskId', (req: express.Request, res: expr
 
 // Login
 router.post('/login', (req: express.Request, res: express.Response) => {
-    console.log(`Body received: ${JSON.stringify(req.body)}`);
     UserSchema.findOne({ username: req.body.username }, (err: Error, existingUser: IUserModel) => {
         if (err) {
             return res.status(500).send({ message: err.message });
